@@ -4,35 +4,36 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
   <title>Godt Brød – Registrer strekkoder</title>
+  <meta name="theme-color" content="#0a6c3c">
+  <!-- Viktig for kamera i nettleser (krever HTTPS) -->
+  <meta http-equiv="Permissions-Policy" content="camera=(self)">
+
   <style>
-    :root{ --gb:#0a6c3c; --bg:#fffdf6; --ink:#1d2a21; --ring:#d9e6db; }
-    *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial; color:var(--ink); background:var(--bg)}
-    .wrap{max-width:760px; margin:0 auto; padding:16px}
-    header{border-bottom:1px solid #eef4ee; background:#fff}
-    h1{font-size:18px; margin:0}
-    .brand{display:flex; align-items:center; gap:10px; padding:10px 0}
-    .logo{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;color:#fff;font-weight:800;background:conic-gradient(from 180deg,#0a6c3c,#21b26a,#0a6c3c)}
-    .card{background:#fff; border:1px solid var(--ring); border-radius:14px; padding:12px; box-shadow:0 8px 24px rgba(0,0,0,.05)}
-    .grid{display:grid; gap:10px} @media(min-width:700px){ .grid{grid-template-columns:1fr 1fr} }
-    .btn,.input{font:inherit} .btn{cursor:pointer; border:1px solid #cfe2d5; background:#fff; padding:10px 12px; border-radius:10px; font-weight:600}
-    .btn.primary{background:#0f7e4d; border-color:#0f7e4d; color:#fff}
-    .btn.full{width:100%}
-    .input{width:100%; padding:12px; border:1px solid #dbe8de; border-radius:10px; outline:none}
-    .input:focus{border-color:#21a869; box-shadow:0 0 0 3px rgba(33,168,105,.12)}
-    .hr{height:1px; background:#eef2ee; margin:10px 0}
-    table{width:100%; border-collapse:separate; border-spacing:0 8px}
-    th,td{padding:8px 10px; text-align:left; font-size:14px}
-    thead th{color:#567261} tbody tr{background:#fff; border:1px solid #e6efe9}
+    :root{ --gb:#0a6c3c; --gb2:#0f7e4d; --cream:#fffdf6; --ink:#1d2a21; --ring:#d9e6db; --muted:#6b7b70; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--ink);background:var(--cream)}
+    header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid #eef4ee}
+    .wrap{max-width:900px;margin:0 auto;padding:16px}
+    .brand{display:flex;align-items:center;gap:12px;padding:10px 0}
+    .logo{width:36px;height:36px;border-radius:8px;display:grid;place-items:center;color:#fff;font-weight:800;background:conic-gradient(from 180deg,#0a6c3c,#21b26a,#0a6c3c)}
+    h1{font-size:18px;margin:0}
+    .sub{color:var(--muted);margin:4px 0 0}
+    .card{background:#fff;border:1px solid var(--ring);border-radius:16px;padding:14px;box-shadow:0 8px 24px rgba(0,0,0,.06);margin-bottom:12px}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .row.between{justify-content:space-between}
+    .input, select{padding:10px 12px;border:1px solid #dbe8de;border-radius:10px;min-width:220px}
+    .btn{cursor:pointer;border:1px solid #cfe2d5;background:#fff;padding:10px 12px;border-radius:10px;font-weight:600}
+    .btn.primary{background:#0f7e4d;border-color:#0f7e4d;color:#fff}
+    .btn.danger{background:#b4352e;border-color:#8d2823;color:#fff}
+    .tableWrap{overflow:auto}
+    table{width:100%;border-collapse:separate;border-spacing:0 8px}
+    th,td{padding:8px 10px;text-align:left;font-size:14px}
+    thead th{color:#567261}
+    tbody tr{background:#fff;border:1px solid #e6efe9}
     tbody tr td:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px}
     tbody tr td:last-child{border-top-right-radius:10px;border-bottom-right-radius:10px}
-    .muted{color:#6b7b70; font-size:13px}
-    .modal{position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.5)}
-    .panel{width:min(640px,94vw); background:#0b2c1e; color:#e8fff4; border-radius:14px; padding:12px; border:1px solid #124b31}
-    video{width:100%; border-radius:10px; background:#000}
-    .videoWrap{position:relative; overflow:hidden; border-radius:10px}
-    .scanline{position:absolute; left:10%; right:10%; height:2px; background:#21b26a; box-shadow:0 0 10px #21b26a; animation:scan 2s linear infinite}
-    @keyframes scan{0%{transform:translateY(10%)}50%{transform:translateY(380%)}100%{transform:translateY(10%)}}
+    .muted{color:var(--muted);font-size:13px}
+    video{width:100%;border-radius:10px;background:#000;max-height:380px}
   </style>
 </head>
 <body>
@@ -40,41 +41,48 @@
     <div class="wrap">
       <div class="brand">
         <div class="logo">GB</div>
-        <h1>Registrer strekkoder</h1>
+        <div>
+          <h1>Varetelling – registrer strekkoder</h1>
+          <p class="sub">Skann med kamera eller legg inn manuelt (lagres lokalt)</p>
+        </div>
       </div>
     </div>
   </header>
 
   <main class="wrap">
-    <!-- Inndata -->
+    <!-- Skanner -->
     <section class="card">
-      <div class="grid">
-        <div>
-          <label for="barcode" class="muted">Strekkode (skriv/lim inn)</label>
-          <input id="barcode" class="input" placeholder="F.eks. 7031234567890" inputmode="numeric" autocomplete="off">
-        </div>
-        <div style="align-self:end; display:flex; gap:8px">
-          <button id="addBtn" class="btn primary">Registrer</button>
-          <button id="scanBtn" class="btn">Skann (kamera)</button>
-          <label class="btn" for="fileInput">Ta bilde (iOS)</label>
-          <input id="fileInput" type="file" accept="image/*" capture="environment" class="muted" style="display:none">
-        </div>
+      <h2>Skann</h2>
+      <div class="row">
+        <button id="startScanBtn" class="btn primary">Start kamera</button>
+        <button id="stopScanBtn" class="btn">Stopp</button>
+        <label>Kamera:
+          <select id="cameraSelect"></select>
+        </label>
       </div>
-      <div class="hr"></div>
-      <div class="muted" id="supportNote"></div>
+      <p class="muted" id="supportNote"></p>
+      <video id="video" playsinline muted></video>
     </section>
 
-    <!-- Sammendrag -->
-    <section class="card" style="margin-top:10px">
-      <div style="display:flex; justify-content:space-between; align-items:center">
-        <div><strong>Registrerte koder (aggregert)</strong></div>
-        <div style="display:flex; gap:8px">
-          <button id="clearAll" class="btn">Tøm</button>
-          <button id="exportCsv" class="btn">Last ned CSV</button>
+    <!-- Manuelt -->
+    <section class="card">
+      <h2>Manuelt</h2>
+      <div class="row">
+        <input id="manualInput" class="input" placeholder="Skriv/lim inn strekkode" inputmode="numeric" autocomplete="off">
+        <button id="addBtn" class="btn">Registrer</button>
+      </div>
+    </section>
+
+    <!-- Aggregert -->
+    <section class="card">
+      <div class="row between">
+        <h2>Registrerte koder</h2>
+        <div class="row">
+          <button id="exportCsvBtn" class="btn">Last ned CSV</button>
+          <button id="clearAllBtn" class="btn danger">Tøm</button>
         </div>
       </div>
-      <div class="hr"></div>
-      <div style="overflow:auto">
+      <div class="tableWrap">
         <table>
           <thead><tr><th>Strekkode</th><th>Antall</th><th>Sist registrert</th></tr></thead>
           <tbody id="aggBody"></tbody>
@@ -82,187 +90,197 @@
       </div>
     </section>
 
-    <!-- Siste hendelser -->
-    <section class="card" style="margin-top:10px">
-      <strong>Siste registreringer</strong>
-      <div class="hr"></div>
-      <div style="overflow:auto">
+    <!-- Siste -->
+    <section class="card">
+      <h2>Siste registreringer</h2>
+      <div class="tableWrap">
         <table>
           <thead><tr><th>Tidspunkt</th><th>Strekkode</th></tr></thead>
-          <tbody id="logBody"></tbody>
+        <tbody id="logBody"></tbody>
         </table>
       </div>
     </section>
   </main>
 
-  <!-- Skannemodal -->
-  <div id="scanModal" class="modal" role="dialog" aria-modal="true" aria-label="Skann strekkode">
-    <div class="panel">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <div style="font-weight:700">Skann strekkode</div>
-        <button id="closeScan" class="btn">Lukk</button>
-      </div>
-      <div class="videoWrap">
-        <video id="video" playsinline muted></video>
-        <div class="scanline"></div>
-      </div>
-      <div style="margin-top:8px" class="muted" id="scanHint">Hold koden midt i bildet.</div>
-    </div>
-  </div>
+  <!-- ZXing (kamera/strekkode) -->
+  <script src="https://unpkg.com/@zxing/browser@latest"></script>
 
   <script>
-    // --------- Tilstand (lagres i localStorage) ---------
-    const state = {
-      log: [],   // [{ts, code}]
-      agg: {}    // code -> {count, lastTs}
-    };
+    // ---------- Tilstand ----------
+    const state = { log: [], agg: Object.create(null) };
     try {
-      const s = JSON.parse(localStorage.getItem("gb_codes") || "{}");
-      if (s.log && s.agg) { state.log = s.log; state.agg = s.agg; }
+      const saved = JSON.parse(localStorage.getItem('gb_codes') || '{}');
+      if (saved.log && saved.agg) { state.log = saved.log; state.agg = saved.agg; }
     } catch {}
 
-    const $ = s => document.querySelector(s);
-    const elBarcode = $("#barcode"), elAggBody = $("#aggBody"), elLogBody = $("#logBody");
-    const elSupport = $("#supportNote");
+    // ---------- Elementer ----------
+    const $ = id => document.getElementById(id);
+    const videoEl = $('video');
+    const deviceSelectEl = $('cameraSelect');
+    const startBtn = $('startScanBtn');
+    const stopBtn = $('stopScanBtn');
+    const manualInput = $('manualInput');
+    const addBtn = $('addBtn');
+    const exportBtn = $('exportCsvBtn');
+    const clearBtn = $('clearAllBtn');
+    const aggBody = $('aggBody');
+    const logBody = $('logBody');
+    const supportNote = $('supportNote');
 
-    // --------- Persist / Render ---------
-    function persist(){ localStorage.setItem("gb_codes", JSON.stringify(state)); }
-    function render(){
+    // ---------- Hjelpere ----------
+    const persist = () => localStorage.setItem('gb_codes', JSON.stringify(state));
+    const nowISO = () => new Date().toISOString();
+
+    function render() {
       // Agg
-      elAggBody.innerHTML = "";
-      const codes = Object.keys(state.agg).sort();
-      if (!codes.length){
-        elAggBody.innerHTML = `<tr><td colspan="3" class="muted">Ingen registrerte koder.</td></tr>`;
+      aggBody.innerHTML = '';
+      const rows = Object.entries(state.agg).sort(([a],[b]) => a.localeCompare(b));
+      if (!rows.length) {
+        aggBody.innerHTML = `<tr><td colspan="3" class="muted">Ingen registrerte koder.</td></tr>`;
       } else {
-        codes.forEach(code=>{
-          const r = state.agg[code];
-          const tr = document.createElement("tr");
+        for (const [code, r] of rows) {
+          const tr = document.createElement('tr');
           tr.innerHTML = `<td>${code}</td><td>${r.count}</td><td>${new Date(r.lastTs).toLocaleString()}</td>`;
-          elAggBody.appendChild(tr);
-        });
+          aggBody.appendChild(tr);
+        }
       }
       // Logg (siste 20)
-      elLogBody.innerHTML = "";
+      logBody.innerHTML = '';
       const last = state.log.slice(-20).reverse();
-      if (!last.length){
-        elLogBody.innerHTML = `<tr><td colspan="2" class="muted">Tom logg.</td></tr>`;
+      if (!last.length) {
+        logBody.innerHTML = `<tr><td colspan="2" class="muted">Tom logg.</td></tr>`;
       } else {
-        last.forEach(e=>{
-          const tr = document.createElement("tr");
+        for (const e of last) {
+          const tr = document.createElement('tr');
           tr.innerHTML = `<td>${new Date(e.ts).toLocaleString()}</td><td>${e.code}</td>`;
-          elLogBody.appendChild(tr);
-        });
+          logBody.appendChild(tr);
+        }
       }
     }
     render();
 
-    // --------- Registrering ---------
-    function registerCode(raw){
-      const code = String(raw||"").trim();
+    function registerCode(raw) {
+      const code = String(raw || '').trim();
       if (!code) return;
-      const ts = new Date().toISOString();
+      const ts = nowISO();
       state.log.push({ ts, code });
       if (!state.agg[code]) state.agg[code] = { count: 0, lastTs: ts };
-      state.agg[code].count += 1;
-      state.agg[code].lastTs = ts;
-      try { navigator.vibrate && navigator.vibrate(16);} catch {}
+      state.agg[code].count += 1; state.agg[code].lastTs = ts;
+      try { navigator.vibrate && navigator.vibrate(16); } catch {}
       persist(); render();
     }
 
-    $("#addBtn").onclick = () => {
-      registerCode(elBarcode.value);
-      elBarcode.value = ""; elBarcode.focus();
-    };
-    elBarcode.addEventListener("keydown", (e)=>{
-      if (e.key === "Enter") { e.preventDefault(); $("#addBtn").click(); }
+    // ---------- Manuell registrering ----------
+    addBtn.addEventListener('click', () => {
+      registerCode(manualInput.value);
+      manualInput.value = ''; manualInput.focus();
+    });
+    manualInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); addBtn.click(); }
     });
 
-    // --------- CSV-eksport / Tøm ---------
-    $("#exportCsv").onclick = () => {
-      const rows = [["timestamp","barcode"]];
+    // ---------- CSV / Tøm ----------
+    exportBtn.addEventListener('click', () => {
+      const rows = [['timestamp','barcode']];
       state.log.forEach(e => rows.push([e.ts, e.code]));
-      const csv = rows.map(r => r.map(v => `"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");
-      const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+      const csv = rows.map(r => r.map(v => `"${String(v).replaceAll('"','""')}"`).join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a"); a.href = url; a.download = "strekkoder_log.csv";
+      const a = document.createElement('a'); a.href = url; a.download = 'strekkoder_log.csv';
       document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-    };
-    $("#clearAll").onclick = () => {
-      if (confirm("Tømme alle registreringer?")) {
-        state.log = []; state.agg = {}; persist(); render();
-      }
-    };
-
-    // --------- Skanning (kamera) + iOS-bilde ---------
-    const hasBD = ("BarcodeDetector" in window);
-    elSupport.textContent = hasBD
-      ? "Kamera-skann støttes på denne enheten."
-      : "Kamera-skann er ikke tilgjengelig her. Bruk «Ta bilde (iOS)» eller skriv inn koden.";
-
-    // Kamera-modal
-    let stream=null, track=null, scanning=false;
-    $("#scanBtn").onclick = () => { if (!hasBD) { alert("Ikke støttet. Bruk «Ta bilde (iOS)»."); return; } openScan(); };
-    $("#closeScan").onclick = closeScan;
-
-    async function openScan(){
-      $("#scanModal").style.display="grid";
-      try{
-        stream = await navigator.mediaDevices.getUserMedia({
-          video:{facingMode:{ideal:"environment"}, width:{ideal:1280}, height:{ideal:720}}, audio:false
-        });
-        const video = $("#video");
-        video.srcObject = stream; await video.play();
-        track = stream.getVideoTracks()[0];
-        scanning = true; detectLoop(video);
-      }catch(err){
-        alert("Kunne ikke åpne kamera. Sjekk HTTPS/tillatelser.");
-        closeScan();
-      }
-    }
-    function closeScan(){
-      $("#scanModal").style.display="none";
-      scanning=false;
-      if (stream) stream.getTracks().forEach(t=>t.stop());
-      stream=track=null;
-    }
-
-    async function detectLoop(video){
-      const detector = new BarcodeDetector({formats:["ean_13","ean_8","upc_a","upc_e","code_128","qr_code"]});
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d", {willReadFrequently:true});
-      while(scanning){
-        if (video.readyState >= 2){
-          canvas.width = video.videoWidth; canvas.height = video.videoHeight;
-          ctx.drawImage(video, 0, 0);
-          const bmp = await createImageBitmap(canvas);
-          try{
-            const codes = await detector.detect(bmp);
-            if (codes.length){
-              const val = codes[0].rawValue;
-              registerCode(val);
-              closeScan();
-              break;
-            }
-          }catch{}
-        }
-        await new Promise(r=>setTimeout(r,140));
-      }
-    }
-
-    // iOS-vennlig: Ta bilde og forsøk detektering hvis støttet
-    $("#fileInput").addEventListener("change", async (e)=>{
-      const f = e.target.files?.[0]; if (!f) return;
-      if (!hasBD){ alert("Detektering ikke støttet. Skriv inn koden manuelt."); e.target.value=""; return; }
-      try{
-        const img = await createImageBitmap(f);
-        const detector = new BarcodeDetector({formats:["ean_13","ean_8","upc_a","upc_e","code_128","qr_code"]});
-        const codes = await detector.detect(img);
-        if (codes.length) { registerCode(codes[0].rawValue); }
-        else { alert("Fant ingen strekkode i bildet. Prøv igjen."); }
-      }catch{
-        alert("Kunne ikke lese bildet. Prøv igjen.");
-      }finally{ e.target.value=""; }
     });
+
+    clearBtn.addEventListener('click', () => {
+      if (!state.log.length) return;
+      if (confirm('Tømme alle registreringer?')) {
+        state.log = []; state.agg = Object.create(null);
+        persist(); render();
+      }
+    });
+
+    // ---------- Kamera / ZXing ----------
+    const hasMedia = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+    supportNote.textContent = hasMedia
+      ? 'Kamera støttes. Bruk HTTPS (GitHub Pages er https://) og gi tilgang.'
+      : 'Kamera ikke tilgjengelig i denne nettleseren.';
+
+    let codeReader = null;
+    let currentDeviceId = null;
+
+    async function listCameras() {
+      try {
+        const devices = await ZXing.BrowserCodeReader.listVideoInputDevices();
+        deviceSelectEl.innerHTML = '';
+        if (!devices.length) {
+          deviceSelectEl.innerHTML = `<option>Ingen kamera funnet</option>`;
+          return;
+        }
+        devices.forEach((d, i) => {
+          const opt = document.createElement('option');
+          opt.value = d.deviceId;
+          opt.textContent = d.label || `Kamera ${i+1}`;
+          deviceSelectEl.appendChild(opt);
+        });
+        // velg bak-kamera om mulig
+        const back = devices.find(d => /back|rear|environment/i.test(d.label));
+        deviceSelectEl.value = back?.deviceId || devices[0].deviceId;
+        currentDeviceId = deviceSelectEl.value;
+      } catch {
+        deviceSelectEl.innerHTML = `<option>Kunne ikke hente kamera</option>`;
+      }
+    }
+
+    deviceSelectEl.addEventListener('change', () => {
+      currentDeviceId = deviceSelectEl.value;
+    });
+
+    startBtn.addEventListener('click', async () => {
+      if (!hasMedia) { alert('Kamera ikke tilgjengelig.'); return; }
+      if (!currentDeviceId) await listCameras();
+
+      // Stopp ev. tidligere
+      stopScan();
+
+      codeReader = new ZXing.BrowserMultiFormatReader();
+      try {
+        await codeReader.decodeFromVideoDevice(currentDeviceId, videoEl, (result, err) => {
+          if (result) {
+            registerCode(result.getText());
+            // Stopp etter første treff (enkelt modus). Ta bort linjen for kontinuerlig skann.
+            stopScan();
+          }
+        });
+      } catch (e) {
+        alert('Kunne ikke starte skann. Sjekk HTTPS og kameratilganger.');
+        stopScan();
+      }
+    });
+
+    function stopScan() {
+      try { codeReader?.reset(); } catch {}
+      try {
+        const stream = videoEl?.srcObject;
+        if (stream) stream.getTracks().forEach(t => t.stop());
+      } catch {}
+      videoEl.srcObject = null;
+    }
+    stopBtn.addEventListener('click', stopScan);
+
+    // Init
+    (async () => { if (hasMedia) await listCameras(); })();
+
+    // ---------- Enkel offline-støtte (service worker inline) ----------
+    if ('serviceWorker' in navigator) {
+      const code = `
+        const C='gb-vt-inline-v1';
+        self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(['./'])));self.skipWaiting()});
+        self.addEventListener('activate',e=>self.clients.claim());
+        self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(resp=>{const cp=resp.clone();caches.open(C).then(c=>c.put(e.request,cp));return resp}).catch(()=>r)))});
+      `;
+      const blob = new Blob([code], {type:'text/javascript'});
+      const url = URL.createObjectURL(blob);
+      navigator.serviceWorker.register(url).catch(()=>{});
+    }
   </script>
 </body>
 </html>
