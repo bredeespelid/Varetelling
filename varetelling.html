@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <title>Mobil WebApp Sjekk</title>
+  <style>
+    :root{
+      --bg:#0f172a;        /* slate-900 */
+      --card:#111827;      /* gray-900 */
+      --muted:#9ca3af;     /* gray-400 */
+      --text:#e5e7eb;      /* gray-200 */
+      --accent:#22c55e;    /* green-500 */
+      --warn:#f59e0b;      /* amber-500 */
+      --error:#ef4444;     /* red-500 */
+      --ok:#10b981;        /* emerald-500 */
+      --btn:#1f2937;       /* gray-800 */
+      --ring:#334155;      /* slate-700 */
+    }
+    * {box-sizing:border-box}
+    html,body {height:100%}
+    body{
+      margin:0; font-family:system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color:var(--text); background:linear-gradient(180deg, var(--bg), #020617);
+    }
+    .wrap{
+      max-width:800px; margin:0 auto; padding:16px 16px 40px;
+    }
+    header{
+      position:sticky; top:0; z-index:10; backdrop-filter:saturate(1.2) blur(6px);
+      background:rgba(2,6,23,0.6); border-bottom:1px solid #0b1220;
+    }
+    .title{
+      display:flex; align-items:center; gap:12px; padding:12px 4px;
+    }
+    .avatar{
+      width:40px; height:40px; border-radius:12px; background:conic-gradient(from 90deg, #22c55e, #0ea5e9);
+      display:grid; place-items:center; font-weight:800; color:#001b0f;
+      box-shadow:0 0 0 2px rgba(255,255,255,0.06) inset, 0 6px 20px rgba(0,0,0,0.4);
+    }
+    h1{font-size:18px; margin:0}
+    .grid{display:grid; gap:12px; grid-template-columns:1fr; margin-top:14px}
+    @media(min-width:700px){ .grid{ grid-template-columns:1fr 1fr } }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border:1px solid rgba(148,163,184,0.12);
+      border-radius:16px; padding:14px; box-shadow:0 10px 30px rgba(0,0,0,0.25);
+    }
+    .card h2{font-size:16px; margin:0 0 8px 0}
+    .muted{color:var(--muted); font-size:13px}
+    .row{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+    .tag{font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid var(--ring); background:rgba(51,65,85,0.35)}
+    .ok{border-color:rgba(16,185,129,.4); background:rgba(16,185,129,.08); color:#a7f3d0}
+    .warn{border-color:rgba(245,158,11,.4); background:rgba(245,158,11,.08); color:#fde68a}
+    .err{border-color:rgba(239,68,68,.4); background:rgba(239,68,68,.08); color:#fecaca}
+    button{
+      appearance:none; border:1px solid rgba(148,163,184,0.22);
+      background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      color:var(--text); padding:12px 14px; border-radius:12px; font-weight:600;
+      display:inline-flex; gap:8px; align-items:center; cursor:pointer;
+    }
+    button:active{transform:translateY(1px)}
+    button.full{width:100%; justify-content:center}
+    .btnbar{display:flex; gap:8px; flex-wrap:wrap}
+    .accent{border-color:rgba(34,197,94,.5)}
+    .danger{border-color:rgba(239,68,68,.5)}
+    video{width:100%; border-radius:14px; border:1px solid rgba(148,163,184,0.2); background:#000}
+    .scanline{position:absolute; left:10%; right:10%; height:2px; background:var(--accent); box-shadow:0 0 18px var(--accent); animation:scan 2.2s linear infinite}
+    @keyframes scan { 0%{transform:translateY(10%)} 50%{transform:translateY(380%)} 100%{transform:translateY(10%)} }
+    .videoWrap{position:relative; overflow:hidden; border-radius:14px}
+    .out{white-space:pre-wrap; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:12px; background:#020617; padding:10px; border-radius:8px; border:1px solid rgba(148,163,184,0.15)}
+    .kpi{display:flex; gap:16px; flex-wrap:wrap}
+    .kpi .pill{background:#0b1220; border:1px solid rgba(148,163,184,0.15); padding:10px 12px; border-radius:10px; font-size:13px}
+    .footer{margin-top:18px; color:var(--muted); font-size:12px}
+    .hr{height:1px; background:rgba(148,163,184,0.15); margin:12px 0}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="title">
+        <div class="avatar">GB</div>
+        <div>
+          <h1>Mobil WebApp Sjekk — Varetelling (demo)</h1>
+          <div class="muted">HTML + CSS + JS i én fil. Test PWA, kamera, torch, vibrasjon og strekkode.</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="grid">
+      <!-- STATUS -->
+      <section class="card">
+        <h2>Status</h2>
+        <div class="kpi" id="statusPills"></div>
+        <div class="hr"></div>
+        <div class="row">
+          <button id="btnInstall" class="accent">Legg til på Hjem-skjerm (PWA)</button>
+          <button id="btnVibrate">Vibrasjonstest</button>
+          <button id="btnSaveLS">Lagre test i localStorage</button>
+          <button id="btnClearLS" class="danger">Tøm localStorage</button>
+        </div>
+        <p class="footer">Tips: Kjør via HTTPS for kameratilgang. Installer som app for fullskjerm.</p>
+      </section>
+
+      <!-- KAMERA / SKANN -->
+      <section class="card">
+        <h2>Kamera & Skann</h2>
+        <div class="btnbar">
+          <button id="btnStartCam" class="accent">Start bak-kamera</button>
+          <button id="btnStopCam">Stopp kamera</button>
+          <button id="btnTorch">Lommelykt av/på</button>
+          <button id="btnSnap">Stillbilde</button>
+        </div>
+        <div class="videoWrap" style="margin-top:8px">
+          <video id="video" playsinline muted></video>
+          <div class="scanline" aria-hidden="true"></div>
+        </div>
+        <div class="hr"></div>
+        <div class="row">
+          <span class="tag" id="bdSupport">BarcodeDetector: ukjent</span>
+          <span class="tag" id="torchSupport">Torch: ukjent</span>
+          <span class="tag" id="iosNote" class="muted"></span>
+        </div>
+        <div style="margin-top:8px">
+          <button id="btnScanOnce" class="full">Prøv én skann (BarcodeDetector)</button>
+        </div>
+        <div style="margin-top:8px">
+          <div class="out" id="scanOut">Resultat: (ingen enda)</div>
+        </div>
+      </section>
+
+      <!-- OUTPUT/LOGGER -->
+      <section class="card">
+        <h2>Logger & Info</h2>
+        <div class="out" id="log" style="min-height:140px">Logg starter…</div>
+      </section>
+
+      <!-- HURTIGDOK -->
+      <section class="card">
+        <h2>Hurtignotater</h2>
+        <ul style="margin:0 0 8px 18px">
+          <li>På iOS trenger du “Legg til på Hjem-skjerm” for best kamera-ytelse.</li>
+          <li><code>BarcodeDetector</code> støttes på mange Android-nettlesere; iOS kan trenge fallback (bibliotek).</li>
+          <li>Service worker her caches denne siden for enkel offline-test.</li>
+        </ul>
+        <div class="muted">Neste steg: koble “lagre” til et API som skriver til OneLake/Fabric.</div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const $ = sel => document.querySelector(sel);
+    const log = (...args) => {
+      const el = $('#log');
+      el.textContent += "\n" + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ');
+      el.scrollTop = el.scrollHeight;
+      console.log(...args);
+    };
+
+    // ---- PWA: registrer SW fra minne (enkel cache) ----
+    (async function registerSW(){
+      if ('serviceWorker' in navigator) {
+        const swCode = `
+          const CACHE='gb-demo-v1';
+          self.addEventListener('install', e=>{
+            e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./'])));
+            self.skipWaiting();
+          });
+          self.addEventListener('activate', e=> self.clients.claim());
+          self.addEventListener('fetch', e=>{
+            e.respondWith(caches.match(e.request).then(r => r || fetch(e.request).then(resp=>{
+              const copy = resp.clone();
+              caches.open(CACHE).then(c=>c.put(e.request, copy)).catch(()=>{});
+              return resp;
+            }).catch(()=>r)));
+          });
+        `;
+        const blob = new Blob([swCode], {type:'text/javascript'});
+        const url = URL.createObjectURL(blob);
+        try {
+          await navigator.serviceWorker.register(url);
+          log('SW: Registrert for offline-test.');
+        } catch(err){ log('SW: Feil ved registrering:', err.message); }
+      } else {
+        log('SW: Ikke støttet i denne nettleseren.');
+      }
+    })();
+
+    // ---- PWA install prompt ----
+    let deferredPrompt = null;
+    $('#btnInstall').addEventListener('click', async ()=>{
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        log('PWA installasjon:', outcome);
+        deferredPrompt = null;
+      } else {
+        alert('Installer via nettleserens meny (Legg til på Hjem-skjerm).');
+      }
+    });
+    window.addEventListener('beforeinstallprompt', (e)=>{
+      e.preventDefault();
+      deferredPrompt = e;
+      log('PWA: beforeinstallprompt mottatt.');
+    });
+
+    // ---- Capability tags ----
+    const pills = $('#statusPills');
+    function addPill(text, ok=null){
+      const s = document.createElement('span');
+      s.className = 'pill';
+      if (ok === true) s.classList.add('ok');
+      if (ok === false) s.classList.add('err');
+      s.textContent = text;
+      pills.appendChild(s);
+    }
+
+    // Basistester
+    addPill(`HTTPS: ${location.protocol === 'https:' ? 'ja' : 'nei'}`, location.protocol === 'https:');
+    addPill(`Touch: ${('ontouchstart' in window) ? 'ja' : 'nei'}`, ('ontouchstart' in window));
+    addPill(`LocalStorage`, (function(){ try{ localStorage.setItem('_t','1'); localStorage.removeItem('_t'); return true } catch{ return false }})());
+    addPill(`Vibrate`, !!navigator.vibrate);
+    addPill(`SW`, 'serviceWorker' in navigator);
+
+    // LocalStorage demo
+    $('#btnSaveLS').onclick = ()=>{ localStorage.setItem('gb_demo','ok'); log('localStorage: lagret gb_demo=ok'); };
+    $('#btnClearLS').onclick = ()=>{ localStorage.removeItem('gb_demo'); log('localStorage: slettet gb_demo'); };
+
+    // Vibrasjon
+    $('#btnVibrate').onclick = ()=>{ 
+      if (navigator.vibrate) { navigator.vibrate([16, 60, 16]); log('Vibrasjon sendt.'); } 
+      else { log('Vibrasjon ikke støttet.'); }
+    };
+
+    // ---- Kamera & skann ----
+    const video = $('#video');
+    let stream = null, track = null, imageCapture = null, torchOn = false;
+
+    async function startCamera(){
+      try{
+        if (stream) await stopCamera();
+        const constraints = {
+          audio:false,
+          video: {
+            facingMode: { ideal: 'environment' },
+            width: { ideal: 1280 }, height: { ideal: 720 }
+          }
+        };
+        stream = await navigator.mediaDevices.getUserMedia(constraints);
+        video.srcObject = stream;
+        await video.play();
+        track = stream.getVideoTracks()[0];
+        if ('ImageCapture' in window && track) {
+          imageCapture = new ImageCapture(track);
+        }
+        await detectTorchSupport();
+        log('Kamera startet:', track && track.label ? track.label : 'ukjent');
+      } catch(err){
+        log('Kamera-feil:', err.message || err);
+        alert('Klarte ikke åpne kamera. Sjekk tillatelser/HTTPS.');
+      }
+    }
+
+    async function stopCamera(){
+      if (stream) {
+        stream.getTracks().forEach(t=>t.stop());
+        stream = null; track = null; imageCapture = null; torchOn = false;
+        video.srcObject = null;
+        log('Kamera stoppet.');
+      }
+    }
+
+    async function detectTorchSupport(){
+      const el = $('#torchSupport');
+      if (!track) { el.textContent='Torch: ingen stream'; el.className='tag err'; return; }
+      const cap = track.getCapabilities ? track.getCapabilities() : {};
+      const supported = !!(cap && cap.torch);
+      el.textContent = `Torch: ${supported ? 'støttet' : 'ikke støttet'}`;
+      el.className = 'tag ' + (supported ? 'ok' : 'warn');
+      return supported;
+    }
+
+    async function toggleTorch(){
+      if (!track || !track.applyConstraints) return alert('Torch ikke tilgjengelig.');
+      try{
+        const supported = await detectTorchSupport();
+        if (!supported) return alert('Torch ikke støttet på denne enheten.');
+        torchOn = !torchOn;
+        await track.applyConstraints({ advanced: [{ torch: torchOn }] });
+        log('Torch:', torchOn ? 'på' : 'av');
+      } catch(err){ log('Torch-feil:', err.message); }
+    }
+
+    // Stillbilde
+    $('#btnSnap').onclick = async ()=>{
+      if (!video.videoWidth) return alert('Kamera ikke klart.');
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+      const w = window.open();
+      w.document.write(`<img src="${dataUrl}" style="width:100%;height:auto;display:block" />`);
+      log('Stillbilde tatt (åpnet i ny fane).');
+    };
+
+    $('#btnStartCam').onclick = startCamera;
+    $('#btnStopCam').onclick = stopCamera;
+    $('#btnTorch').onclick = toggleTorch;
+
+    // BarcodeDetector (der det finnes)
+    const bdOK = ('BarcodeDetector' in window);
+    const bdSpan = $('#bdSupport');
+    bdSpan.textContent = `BarcodeDetector: ${bdOK ? 'støttet' : 'ikke støttet'}`;
+    bdSpan.className = 'tag ' + (bdOK ? 'ok' : 'warn');
+    const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints>1);
+    if (isiOS) {
+      const note = $('#iosNote');
+      note.textContent = 'iOS: installer som PWA for best ytelse.';
+      note.className = 'tag warn';
+    }
+
+    async function scanOnce(){
+      if (!bdOK) { 
+        $('#scanOut').textContent = 'Resultat: BarcodeDetector ikke støttet i denne nettleseren.\n(Bruk Android/Chrome, eller legg inn et JS-bibliotek senere.)';
+        return;
+      }
+      try{
+        // Frys én frame fra video til canvas
+        if (!video.videoWidth) return alert('Kamera ikke klart.');
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0);
+        const bd = new BarcodeDetector({ formats: ['qr_code', 'ean_13', 'ean_8', 'code_128', 'upc_a', 'upc_e'] });
+        const bitmap = await createImageBitmap(canvas);
+        const codes = await bd.detect(bitmap);
+        if (!codes.length) {
+          $('#scanOut').textContent = 'Resultat: ingen kode funnet — prøv igjen og fyll mer av bildet med koden.';
+          return;
+        }
+        const lines = codes.map(c => `• ${c.format.toUpperCase()}: ${c.rawValue}`);
+        $('#scanOut').textContent = 'Resultat:\n' + lines.join('\n');
+        navigator.vibrate && navigator.vibrate(30);
+      } catch(err){
+        $('#scanOut').textContent = 'Skann-feil: ' + (err.message || err);
+      }
+    }
+    $('#btnScanOnce').onclick = scanOnce;
+
+    // Logg UA og visse info
+    log('UserAgent:', navigator.userAgent);
+    log('Språk:', navigator.language, 'Plattform:', navigator.platform);
+  </script>
+</body>
+</html>
