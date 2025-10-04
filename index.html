@@ -2,377 +2,267 @@
 <html lang="no">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, viewport-fit=cover">
-  <title>Godt Brød – Varetelling</title>
-  <meta name="theme-color" content="#0a6c3c">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+  <title>Godt Brød – Registrer strekkoder</title>
   <style>
-    :root{
-      --gb-green:#0a6c3c; --gb-green-600:#0f7e4d; --gb-cream:#fffdf6;
-      --ink:#1d2a21; --muted:#6b7b70; --card:#fff; --ring:#d9e6db;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-      color:var(--ink);
-      background:radial-gradient(1100px 380px at 10% -5%, rgba(17,138,87,.10), transparent 60%),
-                 radial-gradient(1100px 380px at 90% -10%, rgba(17,138,87,.08), transparent 60%),
-                 var(--gb-cream);
-    }
-    header{position:sticky; top:0; z-index:10; background:linear-gradient(180deg,#fff,#fffdf6f2);
-      border-bottom:1px solid #eef4ee; backdrop-filter:saturate(1.1) blur(6px);}
-    .wrap{max-width:860px; margin:0 auto; padding:16px}
-    .brand{display:flex; align-items:center; gap:12px; padding:8px 0}
-    .logo{width:36px; height:36px; border-radius:8px; display:grid; place-items:center; font-weight:800; color:#fff;
-      background:conic-gradient(from 180deg,#0a6c3c,#21b26a,#0a6c3c);}
-    h1{font-size:18px; margin:0} .sub{color:var(--muted); font-size:13px}
-    .card{background:var(--card); border:1px solid var(--ring); border-radius:16px; padding:14px; box-shadow:0 10px 30px rgba(0,0,0,.06)}
-    .grid{display:grid; gap:12px} @media(min-width:720px){ .grid{grid-template-columns:1fr 1fr} }
-    .section-title{font-weight:700; margin:0 0 6px 0}
-    .muted{color:var(--muted)} .hr{height:1px; background:#eef2ee; margin:10px 0}
-    .btn,.input,select{font:inherit; color:inherit}
-    .btn{appearance:none; cursor:pointer; background:linear-gradient(180deg,#fff,#f9fbf9);
-      border:1px solid #dce9df; color:#0a4228; padding:10px 12px; border-radius:12px; font-weight:600}
-    .btn.primary{background:linear-gradient(180deg,#16a163,#0f7e4d); color:#fff; border-color:#0f7e4d}
+    :root{ --gb:#0a6c3c; --bg:#fffdf6; --ink:#1d2a21; --ring:#d9e6db; }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial; color:var(--ink); background:var(--bg)}
+    .wrap{max-width:760px; margin:0 auto; padding:16px}
+    header{border-bottom:1px solid #eef4ee; background:#fff}
+    h1{font-size:18px; margin:0}
+    .brand{display:flex; align-items:center; gap:10px; padding:10px 0}
+    .logo{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;color:#fff;font-weight:800;background:conic-gradient(from 180deg,#0a6c3c,#21b26a,#0a6c3c)}
+    .card{background:#fff; border:1px solid var(--ring); border-radius:14px; padding:12px; box-shadow:0 8px 24px rgba(0,0,0,.05)}
+    .grid{display:grid; gap:10px} @media(min-width:700px){ .grid{grid-template-columns:1fr 1fr} }
+    .btn,.input{font:inherit} .btn{cursor:pointer; border:1px solid #cfe2d5; background:#fff; padding:10px 12px; border-radius:10px; font-weight:600}
+    .btn.primary{background:#0f7e4d; border-color:#0f7e4d; color:#fff}
     .btn.full{width:100%}
-    .btn.danger{background:#b4352e; border-color:#8d2823; color:#fff}
-    .toolbar{display:flex; gap:8px; flex-wrap:wrap}
-    .input{width:100%; padding:12px; background:#fff; border:1px solid #dbe8de; border-radius:12px; outline:none}
+    .input{width:100%; padding:12px; border:1px solid #dbe8de; border-radius:10px; outline:none}
     .input:focus{border-color:#21a869; box-shadow:0 0 0 3px rgba(33,168,105,.12)}
-    .choices{display:grid; grid-template-columns:1fr 1fr; gap:8px}
-    @media(min-width:600px){ .choices{grid-template-columns:repeat(3,1fr)}}
-    .choice{border:1px solid #dbe8de; border-radius:12px; padding:10px; background:#fff; cursor:pointer; text-align:center; font-weight:600}
-    .choice.active{background:#0f7e4d; color:#fff; border-color:#0f7e4d}
+    .hr{height:1px; background:#eef2ee; margin:10px 0}
     table{width:100%; border-collapse:separate; border-spacing:0 8px}
     th,td{padding:8px 10px; text-align:left; font-size:14px}
     thead th{color:#567261} tbody tr{background:#fff; border:1px solid #e6efe9}
     tbody tr td:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px}
     tbody tr td:last-child{border-top-right-radius:10px;border-bottom-right-radius:10px}
-    .hide{display:none !important}
-    /* Modal */
+    .muted{color:#6b7b70; font-size:13px}
     .modal{position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.5)}
-    .modal .panel{width:min(680px,94vw); background:#0b2c1e; color:#e8fff4; border-radius:16px; padding:12px;
-      border:1px solid #124b31; box-shadow:0 20px 60px rgba(0,0,0,.45)}
-    video{width:100%; border-radius:12px; background:#000}
-    .videoWrap{position:relative; overflow:hidden; border-radius:12px}
-    .scanline{position:absolute; left:10%; right:10%; height:2px; background:#21b26a; box-shadow:0 0 14px #21b26a; animation:scan 2s linear infinite}
+    .panel{width:min(640px,94vw); background:#0b2c1e; color:#e8fff4; border-radius:14px; padding:12px; border:1px solid #124b31}
+    video{width:100%; border-radius:10px; background:#000}
+    .videoWrap{position:relative; overflow:hidden; border-radius:10px}
+    .scanline{position:absolute; left:10%; right:10%; height:2px; background:#21b26a; box-shadow:0 0 10px #21b26a; animation:scan 2s linear infinite}
     @keyframes scan{0%{transform:translateY(10%)}50%{transform:translateY(380%)}100%{transform:translateY(10%)}}
   </style>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <div class="brand">
-      <div class="logo">GB</div>
-      <div>
-        <h1>Varetelling</h1>
-        <div class="sub">Velg avdeling → skann/skriv strekkode → registrer vare (lagres lokalt)</div>
+  <header>
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo">GB</div>
+        <h1>Registrer strekkoder</h1>
       </div>
     </div>
-  </div>
-</header>
+  </header>
 
-<main class="wrap" id="app">
-  <!-- Steg 1: Avdeling -->
-  <section id="stepDept" class="card">
-    <div class="section-title">Avdeling</div>
-    <p class="muted" style="margin-top:0">Velg din avdeling. Du kan endre senere.</p>
-    <div id="deptChoices" class="choices" aria-live="polite"></div>
-    <div class="hr"></div>
-    <div class="toolbar">
-      <input id="deptCustom" class="input" placeholder="Egendefinert navn (valgfritt)" />
-      <button id="deptConfirm" class="btn primary">Bekreft avdeling</button>
-    </div>
-  </section>
-
-  <!-- Steg 2: Telling -->
-  <section id="stepCount" class="card hide">
-    <div class="toolbar" style="justify-content:space-between">
-      <div id="deptPill" class="sub">Avdeling: –</div>
-      <div class="toolbar">
-        <button id="changeDept" class="btn">Bytt avdeling</button>
-        <button id="exportCsv" class="btn">Last ned CSV</button>
-        <button id="clearAll" class="btn danger">Tøm liste</button>
-      </div>
-    </div>
-    <div class="hr"></div>
-
-    <!-- Skann/manuell -->
-    <div class="grid">
-      <div>
-        <div class="section-title">Strekkode</div>
-        <div class="toolbar">
-          <input id="barcode" class="input" placeholder="Skann eller skriv inn strekkode" inputmode="numeric" />
+  <main class="wrap">
+    <!-- Inndata -->
+    <section class="card">
+      <div class="grid">
+        <div>
+          <label for="barcode" class="muted">Strekkode (skriv/lim inn)</label>
+          <input id="barcode" class="input" placeholder="F.eks. 7031234567890" inputmode="numeric" autocomplete="off">
+        </div>
+        <div style="align-self:end; display:flex; gap:8px">
+          <button id="addBtn" class="btn primary">Registrer</button>
           <button id="scanBtn" class="btn">Skann (kamera)</button>
           <label class="btn" for="fileInput">Ta bilde (iOS)</label>
-          <input id="fileInput" type="file" accept="image/*" capture="environment" class="hide">
-        </div>
-        <small class="muted" id="bdNote"></small>
-      </div>
-      <div>
-        <div class="section-title">Varenavn</div>
-        <input id="name" class="input" placeholder="F.eks. Økologisk surdeigsbrød" />
-      </div>
-    </div>
-
-    <div class="grid" style="margin-top:10px">
-      <div>
-        <div class="section-title">Antall</div>
-        <div class="toolbar">
-          <button id="minus" class="btn">–</button>
-          <input id="qty" class="input" type="number" min="0" value="1" style="max-width:120px;text-align:right">
-          <button id="plus" class="btn">+</button>
+          <input id="fileInput" type="file" accept="image/*" capture="environment" class="muted" style="display:none">
         </div>
       </div>
-      <div style="align-self:end">
-        <button id="addItem" class="btn primary full">Legg til i liste</button>
+      <div class="hr"></div>
+      <div class="muted" id="supportNote"></div>
+    </section>
+
+    <!-- Sammendrag -->
+    <section class="card" style="margin-top:10px">
+      <div style="display:flex; justify-content:space-between; align-items:center">
+        <div><strong>Registrerte koder (aggregert)</strong></div>
+        <div style="display:flex; gap:8px">
+          <button id="clearAll" class="btn">Tøm</button>
+          <button id="exportCsv" class="btn">Last ned CSV</button>
+        </div>
       </div>
-    </div>
+      <div class="hr"></div>
+      <div style="overflow:auto">
+        <table>
+          <thead><tr><th>Strekkode</th><th>Antall</th><th>Sist registrert</th></tr></thead>
+          <tbody id="aggBody"></tbody>
+        </table>
+      </div>
+    </section>
 
-    <div class="hr"></div>
+    <!-- Siste hendelser -->
+    <section class="card" style="margin-top:10px">
+      <strong>Siste registreringer</strong>
+      <div class="hr"></div>
+      <div style="overflow:auto">
+        <table>
+          <thead><tr><th>Tidspunkt</th><th>Strekkode</th></tr></thead>
+          <tbody id="logBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 
-    <!-- Liste -->
-    <div class="section-title">Dagens telling</div>
-    <div style="overflow:auto">
-      <table>
-        <thead><tr><th>Strekkode</th><th>Varenavn</th><th>Antall</th><th style="width:56px"></th></tr></thead>
-        <tbody id="listBody"></tbody>
-      </table>
-    </div>
-  </section>
-</main>
-
-<!-- Skannemodal (kamera) -->
-<div id="scanModal" class="modal" role="dialog" aria-modal="true" aria-label="Skann strekkode">
-  <div class="panel">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
-      <div style="font-weight:700">Skann strekkode</div>
-      <button id="closeScan" class="btn">Lukk</button>
-    </div>
-    <div class="videoWrap">
-      <video id="video" playsinline muted></video>
-      <div class="scanline"></div>
-    </div>
-    <div class="toolbar" style="margin-top:8px">
-      <button id="torchBtn" class="btn">Lommelykt</button>
-      <div id="scanHint" class="muted">Hold koden midt i bildet.</div>
+  <!-- Skannemodal -->
+  <div id="scanModal" class="modal" role="dialog" aria-modal="true" aria-label="Skann strekkode">
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="font-weight:700">Skann strekkode</div>
+        <button id="closeScan" class="btn">Lukk</button>
+      </div>
+      <div class="videoWrap">
+        <video id="video" playsinline muted></video>
+        <div class="scanline"></div>
+      </div>
+      <div style="margin-top:8px" class="muted" id="scanHint">Hold koden midt i bildet.</div>
     </div>
   </div>
-</div>
 
-<script>
-/* ========== Avdelinger ========== */
-const DEFAULT_DEPTS = ["Marken","Korskirken","Vaskerelven","Lagunen","Xhibition","Nesttun","Sandviken","Danmarksplass","Åsane","Os","Fana","Voss"];
-
-/* ========== Tilstand ========= */
-const state = {
-  department: null,
-  items: [],          // linjer i dagens telling
-  products: {}        // "database": barcode -> {name}
-};
-
-/* ========== DOM-hjelpere ========= */
-const $ = s => document.querySelector(s);
-const elDeptChoices=$("#deptChoices"), elDeptCustom=$("#deptCustom"), elDeptPill=$("#deptPill");
-const elStepDept=$("#stepDept"), elStepCount=$("#stepCount");
-const elBarcode=$("#barcode"), elName=$("#name"), elQty=$("#qty"), elListBody=$("#listBody");
-const elBDNote=$("#bdNote");
-
-/* ========== Init / persist ========= */
-(function init(){
-  try{
-    state.department = localStorage.getItem("gb_dept") || null;
-    state.items = JSON.parse(localStorage.getItem("gb_items")||"[]");
-    state.products = JSON.parse(localStorage.getItem("gb_products")||"{}");
-  }catch{}
-  renderDeptChoices();
-  if (state.department) enterCounting();
-  renderList();
-
-  // Info om barcode-støtte
-  const hasBD = ("BarcodeDetector" in window);
-  elBDNote.textContent = hasBD
-    ? "Tips: Kamera-skann støttes på denne enheten."
-    : "Merk: Kamera-skann støttes ikke her. Bruk «Ta bilde (iOS)» eller skriv inn strekkoden.";
-})();
-function persist(){ localStorage.setItem("gb_items", JSON.stringify(state.items)); localStorage.setItem("gb_products", JSON.stringify(state.products)); }
-
-/* ========== Avdelingsvalg ========= */
-function renderDeptChoices(){
-  elDeptChoices.innerHTML = "";
-  [...DEFAULT_DEPTS].forEach(name=>{
-    const b=document.createElement("button");
-    b.type="button"; b.className="choice"+(state.department===name?" active":""); b.textContent=name;
-    b.onclick=()=>{ state.department=name; document.querySelectorAll(".choice").forEach(c=>c.classList.remove("active")); b.classList.add("active"); };
-    elDeptChoices.appendChild(b);
-  });
-}
-$("#deptConfirm").onclick=()=>{
-  const custom=elDeptCustom.value.trim(); if (custom) state.department=custom;
-  if(!state.department){ alert("Velg eller skriv inn avdeling."); return; }
-  localStorage.setItem("gb_dept", state.department); enterCounting();
-};
-$("#changeDept").onclick=()=>{ elStepCount.classList.add("hide"); elStepDept.classList.remove("hide"); };
-function enterCounting(){ elDeptPill.textContent="Avdeling: "+state.department; elStepDept.classList.add("hide"); elStepCount.classList.remove("hide"); }
-
-/* ========== Produkt-DB (auto-gjenkjenning) ========= */
-// Når strekkode tastes/skannes -> auto-fyll navn hvis kjent
-elBarcode.addEventListener("input", ()=>{
-  const code = elBarcode.value.trim();
-  if (code && state.products[code]) { elName.value = state.products[code].name || ""; }
-});
-
-/* ========== Legg til linje ========= */
-$("#plus").onclick=()=> elQty.value=Math.max(0,(+elQty.value||0)+1);
-$("#minus").onclick=()=> elQty.value=Math.max(0,(+elQty.value||0)-1);
-
-$("#addItem").onclick=()=>{
-  const barcode=elBarcode.value.trim();
-  const name=elName.value.trim();
-  const qty=Math.max(0,+elQty.value||0);
-  if(!barcode && !name){ alert("Oppgi strekkode eller varenavn."); return; }
-  if(qty<=0){ alert("Antall må være større enn 0."); return; }
-
-  // Hvis strekkode finnes men navn mangler i DB -> tving navn (første registrering)
-  if (barcode && !name && !state.products[barcode]) {
-    alert("Ny strekkode. Skriv inn varenavn for å registrere i databasen.");
-    elName.focus(); return;
-  }
-
-  // Registrer ny vare i "DB" om vi har strekkode + navn som ikke finnes fra før
-  if (barcode && name && !state.products[barcode]) {
-    state.products[barcode] = { name };
-    localStorage.setItem("gb_products", JSON.stringify(state.products));
-  }
-
-  const id = crypto.randomUUID();
-  const ts = new Date().toISOString();
-  state.items.unshift({ id, barcode, name, qty, ts, dept: state.department });
-  persist();
-  elBarcode.value=""; elName.value=""; elQty.value=1; elBarcode.focus();
-  try{ navigator.vibrate && navigator.vibrate(16); }catch{}
-  renderList();
-};
-
-function renderList(){
-  elListBody.innerHTML="";
-  if(!state.items.length){
-    const tr=document.createElement("tr"); const td=document.createElement("td");
-    td.colSpan=4; td.className="muted"; td.textContent="Ingen linjer enda."; tr.appendChild(td); elListBody.appendChild(tr); return;
-  }
-  state.items.forEach(item=>{
-    const tr=document.createElement("tr");
-    tr.innerHTML=`
-      <td>${item.barcode||"–"}</td>
-      <td>${item.name||"–"}</td>
-      <td>${item.qty}</td>
-      <td style="text-align:right"><button class="btn" data-id="${item.id}" title="Slett">🗑️</button></td>`;
-    tr.querySelector("button").onclick=(e)=>{
-      const id=e.currentTarget.getAttribute("data-id");
-      state.items=state.items.filter(x=>x.id!==id); persist(); renderList();
+  <script>
+    // --------- Tilstand (lagres i localStorage) ---------
+    const state = {
+      log: [],   // [{ts, code}]
+      agg: {}    // code -> {count, lastTs}
     };
-    elListBody.appendChild(tr);
-  });
-}
-$("#clearAll").onclick=()=>{
-  if(!state.items.length) return;
-  if(confirm("Tømme hele listen?")){ state.items=[]; persist(); renderList(); }
-};
-/* CSV-eksport */
-$("#exportCsv").onclick=()=>{
-  const rows=[["department","timestamp","barcode","name","qty"]];
-  state.items.slice().reverse().forEach(i=>rows.push([i.dept,i.ts,i.barcode||"",i.name||"",i.qty]));
-  const csv=rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");
-  const blob=new Blob([csv],{type:"text/csv;charset=utf-8"}); const url=URL.createObjectURL(blob);
-  const a=document.createElement("a"); a.href=url; a.download=`varetelling_${(new Date()).toISOString().slice(0,10)}.csv`;
-  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-};
+    try {
+      const s = JSON.parse(localStorage.getItem("gb_codes") || "{}");
+      if (s.log && s.agg) { state.log = s.log; state.agg = s.agg; }
+    } catch {}
 
-/* ========== Skanning: Kamera (der støttes) ========== */
-const hasBD = ("BarcodeDetector" in window);
-let stream=null, track=null, torchOn=false, scanning=false;
+    const $ = s => document.querySelector(s);
+    const elBarcode = $("#barcode"), elAggBody = $("#aggBody"), elLogBody = $("#logBody");
+    const elSupport = $("#supportNote");
 
-$("#scanBtn").onclick=()=>{
-  if(!hasBD){ alert("Kamera-skann ikke støttet. Bruk «Ta bilde (iOS)» eller skriv inn strekkoden."); return; }
-  openScan();
-};
-$("#closeScan").onclick=closeScan;
-$("#torchBtn").onclick=toggleTorch;
+    // --------- Persist / Render ---------
+    function persist(){ localStorage.setItem("gb_codes", JSON.stringify(state)); }
+    function render(){
+      // Agg
+      elAggBody.innerHTML = "";
+      const codes = Object.keys(state.agg).sort();
+      if (!codes.length){
+        elAggBody.innerHTML = `<tr><td colspan="3" class="muted">Ingen registrerte koder.</td></tr>`;
+      } else {
+        codes.forEach(code=>{
+          const r = state.agg[code];
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${code}</td><td>${r.count}</td><td>${new Date(r.lastTs).toLocaleString()}</td>`;
+          elAggBody.appendChild(tr);
+        });
+      }
+      // Logg (siste 20)
+      elLogBody.innerHTML = "";
+      const last = state.log.slice(-20).reverse();
+      if (!last.length){
+        elLogBody.innerHTML = `<tr><td colspan="2" class="muted">Tom logg.</td></tr>`;
+      } else {
+        last.forEach(e=>{
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${new Date(e.ts).toLocaleString()}</td><td>${e.code}</td>`;
+          elLogBody.appendChild(tr);
+        });
+      }
+    }
+    render();
 
-async function openScan(){
-  $("#scanModal").style.display="grid";
-  try{
-    stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}}, audio:false});
-    const video=$("#video");
-    video.srcObject=stream; await video.play();
-    track=stream.getVideoTracks()[0];
-    scanning=true; detectLoop(video);
-    const cap=track.getCapabilities?.()||{}; $("#scanHint").textContent=cap.torch?"Tips: slå på lommelykt ved behov.":"Tips: sørg for godt lys.";
-  }catch(err){
-    alert("Kunne ikke åpne kamera. Sjekk tillatelser/HTTPS.");
-    closeScan();
-  }
-}
-function closeScan(){ $("#scanModal").style.display="none"; scanning=false; torchOn=false; if(stream){ stream.getTracks().forEach(t=>t.stop()); } stream=track=null; }
-async function toggleTorch(){
-  if(!track?.applyConstraints) return;
-  try{ const cap=track.getCapabilities?.()||{}; if(!cap.torch){ alert("Lommelykt ikke støttet."); return; }
-       torchOn=!torchOn; await track.applyConstraints({advanced:[{torch:torchOn}]}); }catch{}
-}
-async function detectLoop(video){
-  const detector = new BarcodeDetector({formats:["ean_13","ean_8","upc_a","upc_e","code_128","qr_code"]});
-  const canvas=document.createElement("canvas"); const ctx=canvas.getContext("2d",{willReadFrequently:true});
-  while(scanning){
-    if(video.readyState>=2){
-      canvas.width=video.videoWidth; canvas.height=video.videoHeight;
-      ctx.drawImage(video,0,0);
-      const bitmap=await createImageBitmap(canvas);
+    // --------- Registrering ---------
+    function registerCode(raw){
+      const code = String(raw||"").trim();
+      if (!code) return;
+      const ts = new Date().toISOString();
+      state.log.push({ ts, code });
+      if (!state.agg[code]) state.agg[code] = { count: 0, lastTs: ts };
+      state.agg[code].count += 1;
+      state.agg[code].lastTs = ts;
+      try { navigator.vibrate && navigator.vibrate(16);} catch {}
+      persist(); render();
+    }
+
+    $("#addBtn").onclick = () => {
+      registerCode(elBarcode.value);
+      elBarcode.value = ""; elBarcode.focus();
+    };
+    elBarcode.addEventListener("keydown", (e)=>{
+      if (e.key === "Enter") { e.preventDefault(); $("#addBtn").click(); }
+    });
+
+    // --------- CSV-eksport / Tøm ---------
+    $("#exportCsv").onclick = () => {
+      const rows = [["timestamp","barcode"]];
+      state.log.forEach(e => rows.push([e.ts, e.code]));
+      const csv = rows.map(r => r.map(v => `"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");
+      const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a"); a.href = url; a.download = "strekkoder_log.csv";
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    };
+    $("#clearAll").onclick = () => {
+      if (confirm("Tømme alle registreringer?")) {
+        state.log = []; state.agg = {}; persist(); render();
+      }
+    };
+
+    // --------- Skanning (kamera) + iOS-bilde ---------
+    const hasBD = ("BarcodeDetector" in window);
+    elSupport.textContent = hasBD
+      ? "Kamera-skann støttes på denne enheten."
+      : "Kamera-skann er ikke tilgjengelig her. Bruk «Ta bilde (iOS)» eller skriv inn koden.";
+
+    // Kamera-modal
+    let stream=null, track=null, scanning=false;
+    $("#scanBtn").onclick = () => { if (!hasBD) { alert("Ikke støttet. Bruk «Ta bilde (iOS)»."); return; } openScan(); };
+    $("#closeScan").onclick = closeScan;
+
+    async function openScan(){
+      $("#scanModal").style.display="grid";
       try{
-        const codes=await detector.detect(bitmap);
-        if(codes.length){
-          const val=codes[0].rawValue;
-          try{ navigator.vibrate&&navigator.vibrate(25);}catch{}
-          elBarcode.value=val;
-          // auto-fyll navn hvis vi har det
-          if (state.products[val]) { elName.value = state.products[val].name || ""; }
-          closeScan(); break;
+        stream = await navigator.mediaDevices.getUserMedia({
+          video:{facingMode:{ideal:"environment"}, width:{ideal:1280}, height:{ideal:720}}, audio:false
+        });
+        const video = $("#video");
+        video.srcObject = stream; await video.play();
+        track = stream.getVideoTracks()[0];
+        scanning = true; detectLoop(video);
+      }catch(err){
+        alert("Kunne ikke åpne kamera. Sjekk HTTPS/tillatelser.");
+        closeScan();
+      }
+    }
+    function closeScan(){
+      $("#scanModal").style.display="none";
+      scanning=false;
+      if (stream) stream.getTracks().forEach(t=>t.stop());
+      stream=track=null;
+    }
+
+    async function detectLoop(video){
+      const detector = new BarcodeDetector({formats:["ean_13","ean_8","upc_a","upc_e","code_128","qr_code"]});
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d", {willReadFrequently:true});
+      while(scanning){
+        if (video.readyState >= 2){
+          canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+          ctx.drawImage(video, 0, 0);
+          const bmp = await createImageBitmap(canvas);
+          try{
+            const codes = await detector.detect(bmp);
+            if (codes.length){
+              const val = codes[0].rawValue;
+              registerCode(val);
+              closeScan();
+              break;
+            }
+          }catch{}
         }
-      }catch{}
+        await new Promise(r=>setTimeout(r,140));
+      }
     }
-    await new Promise(r=>setTimeout(r,140));
-  }
-}
 
-/* ========== iOS-vennlig: Ta bilde og forsøk detektering når støttet ========== */
-const fileInput=$("#fileInput");
-fileInput.addEventListener("change", async (e)=>{
-  const f=e.target.files?.[0]; if(!f) return;
-  const img=await createImageBitmap(f);
-  if(!hasBD){ alert("Strekkodegjenkjenning er ikke støttet i denne nettleseren. Legg inn strekkoden manuelt."); return; }
-  try{
-    const detector=new BarcodeDetector({formats:["ean_13","ean_8","upc_a","upc_e","code_128","qr_code"]});
-    const codes=await detector.detect(img);
-    if(codes.length){
-      const val=codes[0].rawValue;
-      elBarcode.value=val;
-      if (state.products[val]) { elName.value = state.products[val].name || ""; }
-      try{ navigator.vibrate&&navigator.vibrate(20);}catch{}
-    }else{
-      alert("Fant ingen strekkode i bildet. Prøv på nytt, fyll bilde med koden.");
-    }
-  }catch{
-    alert("Det oppstod et problem ved gjenkjenning. Legg inn strekkoden manuelt.");
-  }finally{
-    fileInput.value="";
-  }
-});
-
-/* ========== Minimal SW for offline ========== */
-(async function registerSW(){
-  if(!("serviceWorker" in navigator)) return;
-  const code=`const C='gb-vt-2';self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(['./'])));self.skipWaiting()});self.addEventListener('activate',e=>self.clients.claim());self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(resp=>{const cp=resp.clone();caches.open(C).then(c=>c.put(e.request,cp)).catch(()=>{});return resp}).catch(()=>r)))})`;
-  const blob=new Blob([code],{type:'text/javascript'}); const url=URL.createObjectURL(blob);
-  try{ await navigator.serviceWorker.register(url);}catch{}
-})();
-</script>
+    // iOS-vennlig: Ta bilde og forsøk detektering hvis støttet
+    $("#fileInput").addEventListener("change", async (e)=>{
+      const f = e.target.files?.[0]; if (!f) return;
+      if (!hasBD){ alert("Detektering ikke støttet. Skriv inn koden manuelt."); e.target.value=""; return; }
+      try{
+        const img = await createImageBitmap(f);
+        const detector = new BarcodeDetector({formats:["ean_13","ean_8","upc_a","upc_e","code_128","qr_code"]});
+        const codes = await detector.detect(img);
+        if (codes.length) { registerCode(codes[0].rawValue); }
+        else { alert("Fant ingen strekkode i bildet. Prøv igjen."); }
+      }catch{
+        alert("Kunne ikke lese bildet. Prøv igjen.");
+      }finally{ e.target.value=""; }
+    });
+  </script>
 </body>
 </html>
